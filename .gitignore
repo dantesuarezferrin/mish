@@ -1,4 +1,5 @@
 *.o
 *.out
 mish
-*.txt
+.direnv/
+.envrc
