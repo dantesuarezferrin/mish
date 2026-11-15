@@ -16,3 +16,9 @@ Con entorno reproducible de Nix:
 nix develop
 make
 ./mish
+```
+o con gcc y make:
+```bash
+make
+./mish
+```
