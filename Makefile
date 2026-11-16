@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pedantic -std=c11 -g -fsanitize=address,undefined
+CFLAGS = -Wall -Wextra -Werror -pedantic -std=c11 -D_POSIX_C_SOURCE=200809L -g -fsanitize=address,undefined
 LDFLAGS = -fsanitize=address,undefined
 
 SRC = src/shell.c src/parser.c src/executor.c src/builtins.c

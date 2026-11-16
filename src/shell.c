@@ -11,35 +11,42 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 int main(void) {
-    char *line = NULL;
-    size_t lineSize = 0;
-    int shouldExit = 0;
-    char **args = NULL;
+	char *line = NULL;
+	size_t lineSize = 0;
+	int shouldExit = 0;
+	char **args = NULL;
 
-    while (!shouldExit) {
-        printf("mish> ");
-        fflush(stdout);
+	struct sigaction sa;
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 
-        if (getline(&line, &lineSize, stdin) == -1) {
-            printf("\n");
-            break;
-        }
+  while (!shouldExit) {
+    printf("mish> ");
+    fflush(stdout);
 
-        args = parseLine(line);
-        if (args != NULL) {
-            if (args[0] != NULL) {
-                if ( handleBuiltin(args, &shouldExit) == 0) {
-                    executeCommand(args);
-                }
-            }
-            free(args);
-        } else {
-            fprintf(stderr, "mish: error al analizar la línea\n");
-        }
+    if (getline(&line, &lineSize, stdin) == -1) {
+      printf("\n");
+      break;
     }
 
-    free(line);
-    return 0;
+    args = parseLine(line);
+    if (args != NULL) {
+      if (args[0] != NULL) {
+        if ( handleBuiltin(args, &shouldExit) == 0) {
+          executeCommand(args);
+        }
+      }
+      free(args);
+    } else {
+      fprintf(stderr, "mish: error al analizar la línea\n");
+    }
+  }
+
+  free(line);
+  return 0;
 }
